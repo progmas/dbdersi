@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company: one
+  department: one
+  city: one
+  country: one
+  sector: one
+
+two:
+  company: two
+  department: two
+  city: two
+  country: two
+  sector: two
