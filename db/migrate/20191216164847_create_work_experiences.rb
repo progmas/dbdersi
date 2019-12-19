@@ -5,7 +5,7 @@ class CreateWorkExperiences < ActiveRecord::Migration[6.0]
       t.references :company, null: false, foreign_key: true
       t.date :start
       t.date :end
-      t.string :title
+      t.string :rank
 
       t.timestamps
     end
