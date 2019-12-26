@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_19_145159) do
+ActiveRecord::Schema.define(version: 2019_12_26_084823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,15 +89,8 @@ ActiveRecord::Schema.define(version: 2019_12_19_145159) do
     t.index ["employee_id"], name: "index_employee_companies_on_employee_id"
   end
 
-  create_table "employees", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.decimal "salary"
-    t.string "pay_scale"
-    t.integer "work_type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_employees_on_user_id"
-  end
+# Could not dump table "employees" because of following StandardError
+#   Unknown type 'work_type' for column 'work_type'
 
   create_table "follows", force: :cascade do |t|
     t.bigint "company_id", null: false
@@ -228,6 +221,7 @@ ActiveRecord::Schema.define(version: 2019_12_19_145159) do
     t.string "password"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deleted_at"
   end
 
   create_table "work_experiences", force: :cascade do |t|

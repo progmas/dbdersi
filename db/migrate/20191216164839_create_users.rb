@@ -5,6 +5,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.string :password
 
       t.timestamps
+      t.datetime :deleted_at
     end
   end
 end
