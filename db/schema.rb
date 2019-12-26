@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_16_170627) do
+ActiveRecord::Schema.define(version: 2019_12_19_145159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,8 +32,11 @@ ActiveRecord::Schema.define(version: 2019_12_16_170627) do
   create_table "applications", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "company_id", null: false
+    t.bigint "advertisement_id", null: false
+    t.boolean "archive"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["advertisement_id"], name: "index_applications_on_advertisement_id"
     t.index ["company_id"], name: "index_applications_on_company_id"
     t.index ["user_id"], name: "index_applications_on_user_id"
   end
@@ -96,6 +99,25 @@ ActiveRecord::Schema.define(version: 2019_12_16_170627) do
     t.index ["user_id"], name: "index_employees_on_user_id"
   end
 
+  create_table "follows", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_follows_on_company_id"
+    t.index ["user_id"], name: "index_follows_on_user_id"
+  end
+
+  create_table "friends", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "other_user_id", null: false
+    t.integer "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["other_user_id"], name: "index_friends_on_other_user_id"
+    t.index ["user_id"], name: "index_friends_on_user_id"
+  end
+
   create_table "instructor_courses", force: :cascade do |t|
     t.bigint "instructor_id", null: false
     t.bigint "course_id", null: false
@@ -107,7 +129,7 @@ ActiveRecord::Schema.define(version: 2019_12_16_170627) do
 
   create_table "instructors", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "title"
+    t.string "rank"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_instructors_on_user_id"
@@ -158,6 +180,7 @@ ActiveRecord::Schema.define(version: 2019_12_16_170627) do
     t.string "gender"
     t.bigint "city_id", null: false
     t.bigint "country_id", null: false
+    t.string "skills"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["city_id"], name: "index_profiles_on_city_id"
@@ -212,7 +235,7 @@ ActiveRecord::Schema.define(version: 2019_12_16_170627) do
     t.bigint "company_id", null: false
     t.date "start"
     t.date "end"
-    t.string "title"
+    t.string "rank"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_work_experiences_on_company_id"
@@ -223,6 +246,7 @@ ActiveRecord::Schema.define(version: 2019_12_16_170627) do
   add_foreign_key "advertisements", "countries"
   add_foreign_key "advertisements", "positions"
   add_foreign_key "advertisements", "sectors"
+  add_foreign_key "applications", "advertisements"
   add_foreign_key "applications", "companies"
   add_foreign_key "applications", "users"
   add_foreign_key "company_department_locations", "cities"
@@ -233,6 +257,10 @@ ActiveRecord::Schema.define(version: 2019_12_16_170627) do
   add_foreign_key "employee_companies", "companies"
   add_foreign_key "employee_companies", "employees"
   add_foreign_key "employees", "users"
+  add_foreign_key "follows", "companies"
+  add_foreign_key "follows", "users"
+  add_foreign_key "friends", "users"
+  add_foreign_key "friends", "users", column: "other_user_id"
   add_foreign_key "instructor_courses", "courses"
   add_foreign_key "instructor_courses", "instructors"
   add_foreign_key "instructors", "users"
