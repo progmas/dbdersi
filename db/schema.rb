@@ -15,19 +15,8 @@ ActiveRecord::Schema.define(version: 2019_12_26_084823) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "advertisements", force: :cascade do |t|
-    t.integer "work_type"
-    t.bigint "position_id", null: false
-    t.bigint "sector_id", null: false
-    t.bigint "city_id", null: false
-    t.bigint "country_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["city_id"], name: "index_advertisements_on_city_id"
-    t.index ["country_id"], name: "index_advertisements_on_country_id"
-    t.index ["position_id"], name: "index_advertisements_on_position_id"
-    t.index ["sector_id"], name: "index_advertisements_on_sector_id"
-  end
+# Could not dump table "advertisements" because of following StandardError
+#   Unknown type 'worktype' for column 'worktype'
 
   create_table "applications", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -42,7 +31,9 @@ ActiveRecord::Schema.define(version: 2019_12_26_084823) do
   end
 
   create_table "cities", force: :cascade do |t|
+    t.bigint "country_id", null: false
     t.string "name"
+    t.index ["country_id"], name: "index_cities_on_country_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -90,7 +81,7 @@ ActiveRecord::Schema.define(version: 2019_12_26_084823) do
   end
 
 # Could not dump table "employees" because of following StandardError
-#   Unknown type 'work_type' for column 'work_type'
+#   Unknown type 'work_type' for column 'worktype'
 
   create_table "follows", force: :cascade do |t|
     t.bigint "company_id", null: false
@@ -243,6 +234,7 @@ ActiveRecord::Schema.define(version: 2019_12_26_084823) do
   add_foreign_key "applications", "advertisements"
   add_foreign_key "applications", "companies"
   add_foreign_key "applications", "users"
+  add_foreign_key "cities", "countries"
   add_foreign_key "company_department_locations", "cities"
   add_foreign_key "company_department_locations", "companies"
   add_foreign_key "company_department_locations", "countries"

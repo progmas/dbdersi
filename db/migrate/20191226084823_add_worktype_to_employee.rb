@@ -1,8 +1,6 @@
 class AddWorktypeToEmployee < ActiveRecord::Migration[6.0]
   def change
-    #execute  <<-SQL
-    #  CREATE TYPE work_type AS ENUM ('parttime', 'fulltime');
-    #SQL
-    add_column :employees, :work_type, :work_type
+    add_column :employees, :worktype, :work_type
+    add_column :advertisements, :worktype, :worktype
   end
 end
